@@ -22,7 +22,6 @@ float loadB = 1.623; // kg
 int analogvalB = 861; // analog reading taken with load B on the load cell
 
 // Upload the sketch again, and confirm, that the kilo-reading from the serial output now is correct, using your known loads
-
 float analogValueAverage = 0;
 
 float threshold = 0.22;
@@ -86,24 +85,27 @@ void postData()
   Process phant; // Used to send command to Shell, and view response
   String curlCmd; // Where we'll put our curl command
   
-  //curlCmd = "curl -u zquRKo3wiO23FOTfQDQKWPz1PMSaFYnP: -k -X POST https://api.pushbullet.com/v2/pushes --header 'Content-Type: application/json' --data-binary '{\"type\": \"note\", \"title\": \"Low Coffee!\", \"body\": \"Coffee Supply in the office is low. Tap to reorder.\"}'";
+  //make the Yo notification
   curlCmd = "curl --data \"api_token=9fd5efd2-deee-4061-8f88-1943701261fd&username=lizhang919&&link=http://www.amazon.com/Audubon-Whole-Coffee-Shade-French/dp/B001ELL42C/ref=sr_1_1?ie=UTF8&qid=1414781474&sr=8-1&keywords=estate+select+coffee\" http://api.justyo.co/yo/";
-
   // Send the curl command:
   Serial.print("Sending command: ");
   Serial.println(curlCmd); // Print command for debug
   phant.runShellCommand(curlCmd); // Send command through Shell
   
-  //curlCmd = "curl -u qL7GueLW8xZKQo6GaczeRP3mt87rSRXc: -k -X POST https://api.pushbullet.com/v2/pushes --header 'Content-Type: application/json' --data-binary '{\"type\": \"note\", \"title\": \"Low Coffee!\", \"body\": \"Coffee Supply in the office is low. Tap to reorder.\"}'";
   curlCmd = "curl --data \"api_token=9fd5efd2-deee-4061-8f88-1943701261fd&username=athomas3187&&link=http://www.amazon.com/Audubon-Whole-Coffee-Shade-French/dp/B001ELL42C/ref=sr_1_1?ie=UTF8&qid=1414781474&sr=8-1&keywords=estate+select+coffee\" http://api.justyo.co/yo/";
-
   // Send the curl command:
   Serial.print("Sending command: ");
   Serial.println(curlCmd); // Print command for debug
   phant.runShellCommand(curlCmd); // Send command through Shell
   
   curlCmd = "curl --data \"api_token=9fd5efd2-deee-4061-8f88-1943701261fd&username=lguo&&link=http://www.amazon.com/Audubon-Whole-Coffee-Shade-French/dp/B001ELL42C/ref=sr_1_1?ie=UTF8&qid=1414781474&sr=8-1&keywords=estate+select+coffee\" http://api.justyo.co/yo/";
-
+  // Send the curl command:
+  Serial.print("Sending command: ");
+  Serial.println(curlCmd); // Print command for debug
+  phant.runShellCommand(curlCmd); // Send command through Shell
+  
+  //make the payment via Simplify API
+  curlCmd = "curl http://54.172.31.190/ChargeWithCardDetails.php";
   // Send the curl command:
   Serial.print("Sending command: ");
   Serial.println(curlCmd); // Print command for debug
@@ -112,9 +114,9 @@ void postData()
   // Read out the response:
   Serial.print("Response: ");
   // Use the phant process to read in any response from Linux:
-  //while (phant.available())
-  //{
-  //  char c = phant.read();
-  //  Serial.write(c);
-  //}
+  while (phant.available())
+  {
+    char c = phant.read();
+    Serial.write(c);
+  }
 }
